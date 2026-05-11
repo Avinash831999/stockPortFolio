@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: stockportfolio
+  datasource:
+    url: jdbc:postgresql://localhost:5432/stockportfoliodb
+    password: Login@123
+    username: postgres
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size=30
+      minimum-idle=10
+      connection-timeout=3000
+      idle-timeout=600000
+      max-lifetime=1800000
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+
+server:
+  port: 8001
+  tomcat:
+    connection-timeout: 5000
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        ORM:
+          jdbc:
+            bind: TRACE
+
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} [%X{requestId}] - %msg%n"
