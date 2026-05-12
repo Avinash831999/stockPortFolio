@@ -39,8 +39,8 @@ public class BasketStockController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{basketId}/{stockId}")
-    public ResponseEntity<Void> deleteBasketStock(@PathVariable Long basketId, @PathVariable Long stockId) {
+    @DeleteMapping
+    public ResponseEntity<Void> deleteBasketStock(@RequestParam Long basketId, @RequestParam Long stockId) {
         this.basketStockService.delete(basketId,stockId);
         return ResponseEntity.noContent().build();
     }

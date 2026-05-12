@@ -18,7 +18,7 @@ class TraderStatusTest {
 
         Field field = TraderStatus.class.getDeclaredField("traderStatusCode");
         field.setAccessible(true);
-        assertEquals(1, field.get(TraderStatus.ACTIVE));
-        assertEquals(0, field.get(TraderStatus.INACTIVE));
+        assertEquals(0, field.get(TraderStatus.ACTIVE));
+        assertEquals(1, field.get(TraderStatus.INACTIVE));
     }
 }

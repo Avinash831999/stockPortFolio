@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public interface HoldingRepository extends JpaRepository<Holding ,Long> {
 
-   Optional<Holding> findByTraderIdAndStockId(Long traderId, Long stockId);
-   boolean existsByTraderIdAndStockId(Long traderId, Long stockId);
-   List<Holding> findByTraderId(Long traderId);
+   Optional<Holding> findByTrader_IdAndStock_Id(Long traderId, Long stockId);
+   boolean existsByTrader_IdAndStock_Id(Long traderId, Long stockId);
+   List<Holding> findByTrader_Id(Long traderId);
 
 }

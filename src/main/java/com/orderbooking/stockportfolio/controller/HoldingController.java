@@ -19,18 +19,27 @@ public class HoldingController {
         this.holdingsService = holdingsService;
     }
 
-    @PutMapping("/")
-    public ResponseEntity<HoldingDto> updateHoldings(@Valid @RequestBody HoldingDto holding) {
-        return ResponseEntity.ok(this.holdingsService.updateHoldings(holding));
+//    @PutMapping
+//    public ResponseEntity<HoldingDto> updateHoldings(@Valid @RequestBody HoldingDto holding) {
+//        return ResponseEntity.ok(this.holdingsService.updateHoldings(holding));
+//    }
+
+    @GetMapping
+    public ResponseEntity<TradersHoldingsDto> getHoldingsByTraderIdAndStockId(
+            @RequestParam Long traderId,
+            @RequestParam(required = false) Long stockId) {
+
+        if (stockId != null) {
+            return ResponseEntity.ok(
+                    this.holdingsService
+                            .getHoldingsByTraderIdAndStockId(traderId, stockId)
+            );
+        }
+
+        return ResponseEntity.ok(
+                this.holdingsService.getHoldingsByTraderId(traderId)
+        );
     }
 
-    @GetMapping("/trader/{traderId}/stock/{stockId}")
-    public ResponseEntity<TradersHoldingsDto> getHoldingsByTraderIdAndStockId(@PathVariable Long traderId, @PathVariable Long stockId) {
-        return ResponseEntity.ok(this.holdingsService.getHoldingsByTraderIdAndStockId(traderId, stockId));
-    }
 
-    @GetMapping("/trader/{traderId}")
-    public ResponseEntity<TradersHoldingsDto> getHoldingsByTraderId(@PathVariable Long traderId) {
-        return ResponseEntity.ok(this.holdingsService.getHoldingsByTraderId(traderId));
-    }
 }

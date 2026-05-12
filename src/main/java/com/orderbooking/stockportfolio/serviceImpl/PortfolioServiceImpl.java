@@ -3,8 +3,6 @@ package com.orderbooking.stockportfolio.serviceImpl;
 import com.orderbooking.stockportfolio.cacheMap.CacheDataMap;
 import com.orderbooking.stockportfolio.dto.PortfolioDto;
 import com.orderbooking.stockportfolio.entity.Holding;
-import com.orderbooking.stockportfolio.entity.Sector;
-import com.orderbooking.stockportfolio.entity.Stock;
 import com.orderbooking.stockportfolio.repository.*;
 import com.orderbooking.stockportfolio.service.PortfolioService;
 import org.slf4j.Logger;
@@ -35,7 +33,7 @@ public class PortfolioServiceImpl implements PortfolioService {
     public PortfolioDto getTraderPortFolio(Long traderId) {
 
         logger.info("Preparing portfolio info of trader {}",traderId);
-        List<Holding> tradersHolding =  this.holdingRepository.findByTraderId(traderId);
+        List<Holding> tradersHolding = this.holdingRepository.findByTrader_Id(traderId);
 //        List<Sector> sectors = this.sectorRepository.findAll();
 //        List<Stock> stocks = this.stockRepository.findAllByIdIn(tradersHolding.stream().map(Holding::getStockId).toList());
 
@@ -47,11 +45,10 @@ public class PortfolioServiceImpl implements PortfolioService {
         Map<String, Integer> positions = new HashMap<>();
         Map<String, Integer> sectorBreakDown = new HashMap<>();
         Map<Long,String> stockIdNameMap = cacheDataMap.getStockIdNameMap();
-        Map<Long,String> sectorIdNameMap = cacheDataMap.getSectorIdNameMap();
 
         tradersHolding.forEach(holding -> {
-            String sectorName = sectorIdNameMap.get(holding.getSectorId());
-            String  stockName= stockIdNameMap.get(holding.getStockId());
+            String sectorName = holding.getSector() != null ? holding.getSector().getName() : "Unknown";
+            String stockName = stockIdNameMap.get(holding.getStock().getId());
 
             positions.put(stockName,  holding.getQuantity());
             sectorBreakDown.put(sectorName, sectorBreakDown.getOrDefault(sectorName, 0) + holding.getQuantity());

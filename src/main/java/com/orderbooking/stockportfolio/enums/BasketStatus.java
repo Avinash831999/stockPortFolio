@@ -2,8 +2,8 @@ package com.orderbooking.stockportfolio.enums;
 
 public enum BasketStatus {
 
-    ACTIVE(1),
-    INACTIVE(0);
+    ACTIVE(0),
+    INACTIVE(1);
 
     private final Integer basketStatusCode;
 

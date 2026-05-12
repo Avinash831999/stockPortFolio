@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -18,6 +19,8 @@ public class Sector {
     private Long id;
     @Column(unique = true)
     private String name;
+    @OneToMany(mappedBy = "sector")
+    private List<Stock> stocks;
     private Date createdAt;
     private Date updatedAt;
 

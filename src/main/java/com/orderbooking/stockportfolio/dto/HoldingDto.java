@@ -20,7 +20,6 @@ public class HoldingDto {
     private Long sectorId;
     @NotNull
     private Integer quantity;
-    @NotNull
     private Long basketId;
     private Date updatedAt;
 }

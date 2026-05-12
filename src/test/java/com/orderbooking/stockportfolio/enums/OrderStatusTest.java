@@ -18,8 +18,8 @@ class OrderStatusTest {
 
         Field field = OrderStatus.class.getDeclaredField("orderStatus");
         field.setAccessible(true);
-        assertEquals(1, field.get(OrderStatus.PENDING));
-        assertEquals(2, field.get(OrderStatus.FILLED));
-        assertEquals(3, field.get(OrderStatus.CANCELLED));
+        assertEquals(0, field.get(OrderStatus.PENDING));
+        assertEquals(1, field.get(OrderStatus.FILLED));
+        assertEquals(2, field.get(OrderStatus.CANCELLED));
     }
 }

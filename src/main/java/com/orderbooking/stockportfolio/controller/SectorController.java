@@ -19,7 +19,7 @@ public class SectorController {
         this.sectorsService = sectorsService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<SectorDto>> getAllSectors() {
         return ResponseEntity.ok(this.sectorsService.getAllSectors());
     }

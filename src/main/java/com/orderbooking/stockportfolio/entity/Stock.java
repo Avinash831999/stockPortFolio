@@ -19,7 +19,9 @@ public class Stock {
     @Column(unique = true)
     private String name;
     private Float price;
-    private Long sectorId;
+    @ManyToOne
+    @JoinColumn(name = "sector_id", nullable = false)
+    private Sector sector;
     private Date createdAt;
     private Date updatedAt;
 

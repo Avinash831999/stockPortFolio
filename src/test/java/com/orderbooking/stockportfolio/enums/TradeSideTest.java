@@ -9,8 +9,8 @@ class TradeSideTest {
 
     @Test
     void shouldCoverGetCodeAndFromName() {
-        assertEquals(1, TradeSide.BUY.getTradeSideCode());
-        assertEquals(0, TradeSide.SELL.getTradeSideCode());
+        assertEquals(0, TradeSide.BUY.getTradeSideCode());
+        assertEquals(1, TradeSide.SELL.getTradeSideCode());
         assertEquals(TradeSide.BUY, TradeSide.fromName("buy"));
         assertEquals(TradeSide.SELL, TradeSide.fromName("SELL"));
         assertThrows(IllegalArgumentException.class, () -> TradeSide.fromName("invalid"));

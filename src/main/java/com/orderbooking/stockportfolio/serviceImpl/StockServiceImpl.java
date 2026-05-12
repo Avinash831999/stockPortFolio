@@ -3,10 +3,11 @@ package com.orderbooking.stockportfolio.serviceImpl;
 import com.orderbooking.stockportfolio.cacheMap.CacheDataMap;
 import com.orderbooking.stockportfolio.dto.StockDto;
 import com.orderbooking.stockportfolio.entity.Stock;
+import com.orderbooking.stockportfolio.entity.Sector;
 import com.orderbooking.stockportfolio.exceptions.DataNotFoundException;
 import com.orderbooking.stockportfolio.exceptions.DuplicateDataException;
 import com.orderbooking.stockportfolio.repository.StockRepository;
-import com.orderbooking.stockportfolio.repository.TraderRepository;
+import com.orderbooking.stockportfolio.repository.SectorRepository;
 import com.orderbooking.stockportfolio.service.StockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +21,12 @@ import java.util.stream.Collectors;
 public class StockServiceImpl implements StockService {
 
     private final StockRepository stockRepository;
+    private final SectorRepository sectorRepository;
     private final CacheDataMap cacheDataMap;
     private final Logger logger = LoggerFactory.getLogger(StockServiceImpl.class);
-    public StockServiceImpl(StockRepository stockRepository, CacheDataMap cacheDataMap){
+    public StockServiceImpl(StockRepository stockRepository, SectorRepository sectorRepository, CacheDataMap cacheDataMap){
         this.stockRepository = stockRepository;
+        this.sectorRepository = sectorRepository;
         this.cacheDataMap = cacheDataMap;
     }
 
@@ -48,15 +51,17 @@ public class StockServiceImpl implements StockService {
     @Override
     public StockDto updateStock(Long stockId, StockDto stockDto) {
 
-        if(cacheDataMap.getStockIdNameMap().containsKey(stockId) &&
-                cacheDataMap.getStockIdNameMap().get(stockId).equals(stockDto.getName())) {
+        if(cacheDataMap.getStockIdNameMap().containsKey(stockId)
+                ) {
             Stock stock = this.stockRepository.findById(stockId).get();
 
             if(stockDto.getName() != null) {
                 stock.setName(stockDto.getName());
             }
             if(stockDto.getSectorId() != null) {
-                stock.setName(stockDto.getName());
+                Sector sector = sectorRepository.findById(stockDto.getSectorId()).orElseThrow(() ->
+                    new DataNotFoundException("Sector with id " + stockDto.getSectorId() + " not found"));
+                stock.setSector(sector);
             }
             if(stockDto.getPrice() != null) {
                 stock.setPrice(stockDto.getPrice());
@@ -67,8 +72,8 @@ public class StockServiceImpl implements StockService {
             return convertToDto(stock);
         }
         else{
-            logger.error("Stock with name {} not found", stockDto.getName());
-            throw new DataNotFoundException("Stock " + stockDto.getName() + " not found");
+            logger.error("Stock with id {} not found", stockDto.getId());
+            throw new DataNotFoundException("Stock " + stockDto.getId() + " not found");
         }
     }
 
@@ -113,7 +118,11 @@ public class StockServiceImpl implements StockService {
         stock.setId(stockDto.getId());
         stock.setName(stockDto.getName());
         stock.setPrice(stockDto.getPrice());
-        stock.setSectorId(stockDto.getSectorId());
+        if(stockDto.getSectorId() != null) {
+            Sector sector = sectorRepository.findById(stockDto.getSectorId()).orElseThrow(() ->
+                new DataNotFoundException("Sector with id " + stockDto.getSectorId() + " not found"));
+            stock.setSector(sector);
+        }
         return stock;
     }
 
@@ -123,8 +132,10 @@ public class StockServiceImpl implements StockService {
         stockDto.setId(stock.getId());
         stockDto.setName(stock.getName());
         stockDto.setPrice(stock.getPrice());
-        stockDto.setSectorId(stock.getSectorId());
-        stockDto.setSectorName(cacheDataMap.getSectorIdNameMap().get(stock.getSectorId()));
+        if(stock.getSector() != null) {
+            stockDto.setSectorId(stock.getSector().getId());
+            stockDto.setSectorName(stock.getSector().getName());
+        }
         stockDto.setCreatedAt(stock.getCreatedAt());
         stockDto.setUpdatedAt(stock.getUpdatedAt());
         return stockDto;

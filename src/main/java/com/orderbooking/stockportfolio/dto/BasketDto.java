@@ -1,5 +1,6 @@
 package com.orderbooking.stockportfolio.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.orderbooking.stockportfolio.enums.BasketStatus;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,10 @@ public class BasketDto {
     @NotBlank
     private String name;
     @NotBlank
+    @JsonProperty("basket_status")
     private String basketStatus;
+    @JsonProperty("created_at")
     private Date createdAt;
+    @JsonProperty("updated_at")
     private Date updatedAt;
 }

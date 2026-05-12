@@ -10,9 +10,10 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 @Entity
-@Table(name = "orders",indexes = {
-        @Index(name = "idx_orders_traderId", columnList = "traderId"),
-        @Index(name = "idx_orders_traderId_stockId", columnList = "traderId, stockId")
+@Table(name = "orders", indexes = {
+        @Index(name = "idx_orders_trader_id", columnList = "trader_id"),
+        @Index(name = "idx_orders_trader_stock", columnList = "trader_id, stock_id"),
+        @Index(name = "idx_orders_trader_orderStatus", columnList = "trader_id, status")
 })
 @Data
 @AllArgsConstructor
@@ -22,9 +23,18 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long traderId;
-    private Long stockId;
-    private Long sectorId;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "trader_id", nullable = false)
+    private Trader trader;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "stock_id", nullable = false)
+    private Stock stock;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "sector_id", nullable = false)
+    private Sector sector;
     private Integer quantity;
     private Float rate;
     private Float total;

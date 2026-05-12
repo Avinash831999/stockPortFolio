@@ -129,12 +129,10 @@ public class HoldingDtoTest {
     }
 
     @Test
-    public void testValidationInvalidBasketId() {
+    public void testValidationNullBasketIdAllowed() {
         HoldingDto dto = new HoldingDto(1L, 2L, 3L, 4L, 100, null, new Date());
         Set<ConstraintViolation<HoldingDto>> violations = validator.validate(dto);
-        assertFalse(violations.isEmpty());
-        assertEquals(1, violations.size());
-        assertEquals("basketId", violations.iterator().next().getPropertyPath().toString());
+        assertTrue(violations.isEmpty());
     }
 
     @Test
@@ -142,6 +140,6 @@ public class HoldingDtoTest {
         HoldingDto dto = new HoldingDto(1L, null, null, null, null, null, new Date());
         Set<ConstraintViolation<HoldingDto>> violations = validator.validate(dto);
         assertFalse(violations.isEmpty());
-        assertEquals(5, violations.size());
+        assertEquals(4, violations.size());
     }
 }

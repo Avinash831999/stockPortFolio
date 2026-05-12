@@ -1,13 +1,6 @@
 package com.orderbooking.stockportfolio.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import jakarta.persistence.Version;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,10 +9,10 @@ import java.util.Date;
 
 @Entity
 @Table(
-    uniqueConstraints = {@UniqueConstraint(columnNames = {"traderId", "stockId"})},
+    uniqueConstraints = {@UniqueConstraint(name = "uk_holding_trader_stock", columnNames = {"trader_id", "stock_id"})},
     indexes = {
-        @Index(name = "idx_holding_trader_id", columnList = "traderId"),
-        @Index(name = "idx_holding_trader_stock", columnList = "traderId, stockId")
+        @Index(name = "idx_holding_trader_id", columnList = "trader_id"),
+        @Index(name = "idx_holding_trader_stock", columnList = "trader_id, stock_id")
     }
 )
 @Data
@@ -30,10 +23,24 @@ public class Holding {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long traderId;
-    private Long stockId;
-    private Long sectorId;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "trader_id", nullable = false)
+    private Trader trader;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "stock_id", nullable = false)
+    private Stock stock;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "sector_id", nullable = false)
+    private Sector sector;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "basket_id")
+    private Basket basket;
+
     private Integer quantity;
     private Date updatedAt;
-    
+
 }

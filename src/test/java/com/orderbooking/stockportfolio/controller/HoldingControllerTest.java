@@ -26,13 +26,6 @@ class HoldingControllerTest {
         controller = new HoldingController(holdingsService);
     }
 
-    @Test
-    void updateHoldings_returnsOk() {
-        HoldingDto dto = new HoldingDto();
-        when(holdingsService.updateHoldings(dto)).thenReturn(dto);
-        ResponseEntity<HoldingDto> response = controller.updateHoldings(dto);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-    }
 
     @Test
     void getHoldingsByTraderIdAndStockId_returnsOk() {
@@ -41,10 +34,5 @@ class HoldingControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
-    @Test
-    void getHoldingsByTraderId_returnsOk() {
-        when(holdingsService.getHoldingsByTraderId(1L)).thenReturn(new TradersHoldingsDto());
-        ResponseEntity<TradersHoldingsDto> response = controller.getHoldingsByTraderId(1L);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-    }
+
 }

@@ -3,9 +3,7 @@ package com.orderbooking.stockportfolio.serviceImpl;
 import com.orderbooking.stockportfolio.cacheMap.CacheDataMap;
 import com.orderbooking.stockportfolio.dto.Overlap;
 import com.orderbooking.stockportfolio.dto.OverlapsInfo;
-import com.orderbooking.stockportfolio.entity.Basket;
 import com.orderbooking.stockportfolio.entity.Holding;
-import com.orderbooking.stockportfolio.entity.Stock;
 import com.orderbooking.stockportfolio.entity.StockBasketMap;
 import com.orderbooking.stockportfolio.enums.RiskFactor;
 import com.orderbooking.stockportfolio.exceptions.DataNotFoundException;
@@ -44,7 +42,7 @@ public class OverlapServiceImpl implements OverlapService {
     }
 
     private List<Holding> fetchTradersHolding(Long traderId) {
-        return holdingRepository.findByTraderId(traderId);
+        return holdingRepository.findByTrader_Id(traderId);
     }
 
     public OverlapsInfo calculateOverlapInfo(Long traderId) {
@@ -61,18 +59,14 @@ public class OverlapServiceImpl implements OverlapService {
 
         Set<Long> baskets = cacheDataMap.getBasketIdNameMap().keySet();
         Map<Long, List<Long>> groupedBasketAll = stockBaskets.stream()
-                .collect(Collectors.groupingBy(StockBasketMap::getBasketId, Collectors.mapping(StockBasketMap::getStockId, Collectors.toList())));
-
-        Map<Long, List<Long>> groupedStocks = stockBaskets.stream()
-                .collect(Collectors.groupingBy(StockBasketMap::getStockId, Collectors.mapping(StockBasketMap::getBasketId, Collectors.toList())));
-
+                .collect(Collectors.groupingBy(m -> m.getBasket().getId(), Collectors.mapping(m -> m.getStock().getId(), Collectors.toList())));
 
         baskets.forEach(basketId -> {
             List<Long> commonStocks = new ArrayList<>();
             tradersHolding.forEach(holding -> {
-                if(groupedBasketAll.get(basketId)!=null){
-                    if( groupedBasketAll.get(basketId).contains(holding.getStockId())){
-                        commonStocks.add(holding.getStockId());
+                if (groupedBasketAll.get(basketId) != null) {
+                    if (groupedBasketAll.get(basketId).contains(holding.getStock().getId())) {
+                        commonStocks.add(holding.getStock().getId());
                     }
                 }
             });

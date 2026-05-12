@@ -38,8 +38,8 @@ class OrderControllerTest {
 
     @Test
     void getOrderDetails_returnsOk() {
-        when(orderService.getOrderDetails(1L, 2L)).thenReturn(new OrderDto());
-        ResponseEntity<OrderDto> response = controller.getOrderDetails(1L, 2L);
+        when(orderService.getOrderDetails(1L)).thenReturn(new OrderDto());
+        ResponseEntity<OrderDto> response = controller.getOrderDetails(1L);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
@@ -53,15 +53,15 @@ class OrderControllerTest {
 
     @Test
     void fillOrder_returnsOk() {
-        when(orderService.fillOrder(1L, 2L)).thenReturn(new OrderDto());
-        ResponseEntity<OrderDto> response = controller.fillOrder(1L, 2L);
+        when(orderService.fillOrder(1L)).thenReturn(new OrderDto());
+        ResponseEntity<OrderDto> response = controller.fillOrder(1L);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
     void cancelOrder_returnsOk() {
-        when(orderService.cancelOrder(1L, 2L)).thenReturn(new OrderDto());
-        ResponseEntity<OrderDto> response = controller.cancelOrder(1L, 2L);
+        when(orderService.cancelOrder(1L)).thenReturn(new OrderDto());
+        ResponseEntity<OrderDto> response = controller.cancelOrder(1L);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 }

@@ -44,7 +44,7 @@ class SectorsServiceImplTest {
         basketMap = new ConcurrentHashMap<>();
 //        when(cacheDataMap.getSectorIdNameMap()).thenReturn(sectorMap);
 //        when(cacheDataMap.getBasketIdNameMap()).thenReturn(basketMap);
-        when(sectorRepository.findAll()).thenReturn(List.of(new Sector(1L, "Tech", new Date(), new Date())));
+        when(sectorRepository.findAll()).thenReturn(List.of(new Sector(1L, "Tech", null, new Date(), new Date())));
         assertEquals(1, service.getAllSectors().size());
     }
 
@@ -55,7 +55,7 @@ class SectorsServiceImplTest {
         basketMap = new ConcurrentHashMap<>();
 //        when(cacheDataMap.getSectorIdNameMap()).thenReturn(sectorMap);
 //        when(cacheDataMap.getBasketIdNameMap()).thenReturn(basketMap);
-        when(sectorRepository.findById(1L)).thenReturn(Optional.of(new Sector(1L, "Tech", new Date(), new Date())));
+        when(sectorRepository.findById(1L)).thenReturn(Optional.of(new Sector(1L, "Tech", null, new Date(), new Date())));
         assertEquals("Tech", service.getSectorDetailsById(1L).getName());
     }
 
@@ -78,7 +78,7 @@ class SectorsServiceImplTest {
         when(cacheDataMap.getSectorIdNameMap()).thenReturn(sectorMap);
 //        when(cacheDataMap.getBasketIdNameMap()).thenReturn(basketMap);
         SectorDto dto = new SectorDto(null, "Tech", null, null);
-        when(sectorRepository.save(any(Sector.class))).thenReturn(new Sector(1L, "Tech", new Date(), new Date()));
+        when(sectorRepository.save(any(Sector.class))).thenReturn(new Sector(1L, "Tech", null, new Date(), new Date()));
         SectorDto result = service.addSector(dto);
         assertEquals(1L, result.getId());
         assertEquals("Tech", sectorMap.get(1L));
@@ -101,12 +101,10 @@ class SectorsServiceImplTest {
         sectorMap = new ConcurrentHashMap<>();
         basketMap = new ConcurrentHashMap<>();
         when(cacheDataMap.getSectorIdNameMap()).thenReturn(sectorMap);
-        when(cacheDataMap.getBasketIdNameMap()).thenReturn(basketMap);
         sectorMap.put(1L, "Tech");
-        basketMap.put(1L, "B1");
         service.removeSector(1L);
         verify(sectorRepository).deleteById(1L);
-        assertEquals(false, basketMap.containsKey(1L));
+        assertEquals(false, sectorMap.containsKey(1L));
     }
 
     @Test
@@ -127,7 +125,7 @@ class SectorsServiceImplTest {
         when(cacheDataMap.getSectorIdNameMap()).thenReturn(sectorMap);
 //        when(cacheDataMap.getBasketIdNameMap()).thenReturn(basketMap);
         sectorMap.put(1L, "Tech");
-        when(sectorRepository.findById(1L)).thenReturn(Optional.of(new Sector(1L, "Tech", new Date(), new Date())));
+        when(sectorRepository.findById(1L)).thenReturn(Optional.of(new Sector(1L, "Tech", null, new Date(), new Date())));
         when(sectorRepository.save(any(Sector.class))).thenAnswer(i -> i.getArgument(0));
         SectorDto result = service.updateSector(1L, new SectorDto(null, "Tech", null, null));
         assertEquals("Tech", result.getName());

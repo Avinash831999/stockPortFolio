@@ -116,3 +116,8 @@ Handled exceptions include:
 - Logging pattern includes the request ID.
 
 
+## Enhancements planned
+- Authentication and authorization (e.g. JWT) to secure endpoints and restrict access based on user roles.
+- Caching frequently accessed data (e.g. stock prices, sector info) in redis instead of local.
+- Pagination and filtering support for list endpoints (e.g. stocks, orders).
+- Aspect-oriented programming (AOP) for cross-cutting concerns like logging, performance monitoring, and security.

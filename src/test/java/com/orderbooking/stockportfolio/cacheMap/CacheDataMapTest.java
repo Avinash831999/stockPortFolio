@@ -2,7 +2,7 @@ package com.orderbooking.stockportfolio.cacheMap;
 
 import com.orderbooking.stockportfolio.entity.Basket;
 import com.orderbooking.stockportfolio.entity.Sector;
-import com.orderbooking.stockportfolio.entity.Stock;
+import com.orderbooking.stockportfolio.support.EntityTestBuilders;
 import com.orderbooking.stockportfolio.entity.Trader;
 import com.orderbooking.stockportfolio.enums.TraderStatus;
 import com.orderbooking.stockportfolio.repository.BasketRepository;
@@ -43,8 +43,8 @@ class CacheDataMapTest {
     @Test
     void init_loadsAllMapsFromRepositories() {
         Date now = new Date();
-        when(sectorRepository.findAll()).thenReturn(List.of(new Sector(1L, "Tech", now, now)));
-        when(stockRepository.findAll()).thenReturn(List.of(new Stock(2L, "ABC", 10f, 1L, now, now)));
+        when(sectorRepository.findAll()).thenReturn(List.of(new Sector(1L, "Tech", null, now, now)));
+        when(stockRepository.findAll()).thenReturn(List.of(EntityTestBuilders.stock(2L, "ABC", 10f, 1L, now, now)));
         when(traderRepository.findAll()).thenReturn(List.of(
                 new Trader(3L, "Alice", "a@a.com", "ABCDE1234F", TraderStatus.ACTIVE, now, now)));
         when(basketRepository.findAll()).thenReturn(List.of(new Basket(4L, "Growth", null, now, now)));

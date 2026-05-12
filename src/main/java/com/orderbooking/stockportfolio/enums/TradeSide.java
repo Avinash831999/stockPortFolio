@@ -2,8 +2,8 @@ package com.orderbooking.stockportfolio.enums;
 
 public enum TradeSide {
 
-    BUY (1),
-    SELL(0);
+    BUY (0),
+    SELL(1);
 
     private final Integer tradeSideCode;
 

@@ -1,8 +1,8 @@
 package com.orderbooking.stockportfolio.enums;
 
 public enum TraderStatus {
-    ACTIVE(1),
-    INACTIVE(0);
+    ACTIVE(0),
+    INACTIVE(1);
 
 
     private final Integer traderStatusCode;

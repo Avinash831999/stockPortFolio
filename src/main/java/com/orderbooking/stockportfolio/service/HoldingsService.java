@@ -14,6 +14,7 @@ public interface HoldingsService {
     HoldingDto updateHoldings(HoldingDto holdingDto);
     TradersHoldingsDto getHoldingsByTraderIdAndStockId(Long traderId, Long stockId);
     TradersHoldingsDto getHoldingsByTraderId(Long traderId);
+    void deleteHolding(HoldingDto holdingDto);
 //    HoldingDto addHolding(HoldingDto holdingDto);
 
 }

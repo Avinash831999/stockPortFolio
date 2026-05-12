@@ -26,9 +26,9 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.orderService.placeOrder(orderDto));
     }
 
-    @GetMapping("/{orderId}/{traderId}")
-    public ResponseEntity<OrderDto> getOrderDetails(@PathVariable Long orderId, @PathVariable Long traderId) {
-        return ResponseEntity.ok(this.orderService.getOrderDetails(orderId, traderId));
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderDto> getOrderDetails(@PathVariable Long orderId) {
+        return ResponseEntity.ok(this.orderService.getOrderDetails(orderId));
     }
 
     @GetMapping("/byTraderId/{traderId}")
@@ -36,13 +36,13 @@ public class OrderController {
         return ResponseEntity.ok(this.orderService.getOrderDetailsOfTrader(traderId));
     }
 
-    @PutMapping("/{orderId}/fill/trader/{traderId}")
-    public ResponseEntity<OrderDto> fillOrder(@PathVariable Long orderId, @PathVariable Long traderId) {
-        return ResponseEntity.ok(this.orderService.fillOrder(orderId, traderId));
+    @PutMapping("/{orderId}/fill")
+    public ResponseEntity<OrderDto> fillOrder(@PathVariable Long orderId) {
+        return ResponseEntity.ok(this.orderService.fillOrder(orderId));
     }
 
-    @PutMapping("/{orderId}/cancel/trader/{traderId}")
-    public ResponseEntity<OrderDto> cancelOrder(@PathVariable Long orderId, @PathVariable Long traderId) {
-        return ResponseEntity.ok(this.orderService.cancelOrder(orderId, traderId));
+    @PutMapping("/{orderId}/cancel")
+    public ResponseEntity<OrderDto> cancelOrder(@PathVariable Long orderId) {
+        return ResponseEntity.ok(this.orderService.cancelOrder(orderId));
     }
 }

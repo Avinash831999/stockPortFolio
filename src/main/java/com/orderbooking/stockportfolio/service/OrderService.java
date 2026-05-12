@@ -10,9 +10,9 @@ import java.util.List;
 public interface OrderService {
 
     OrderDto placeOrder(PlaceOrderDto orderDto);
-    OrderDto getOrderDetails(Long orderId, Long traderId);
+    OrderDto getOrderDetails(Long orderId);
     List<OrderDto> getOrderDetailsOfTrader( Long traderId);
-    OrderDto fillOrder(Long orderId,  Long trader);
-    OrderDto cancelOrder(Long orderId ,  Long trader);
+    OrderDto fillOrder(Long orderId);
+    OrderDto cancelOrder(Long orderId);
 
 }

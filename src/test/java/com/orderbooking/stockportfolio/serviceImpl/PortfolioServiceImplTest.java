@@ -2,7 +2,7 @@ package com.orderbooking.stockportfolio.serviceImpl;
 
 import com.orderbooking.stockportfolio.cacheMap.CacheDataMap;
 import com.orderbooking.stockportfolio.dto.PortfolioDto;
-import com.orderbooking.stockportfolio.entity.Holding;
+import com.orderbooking.stockportfolio.support.EntityTestBuilders;
 import com.orderbooking.stockportfolio.repository.HoldingRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,25 +35,21 @@ class PortfolioServiceImplTest {
 
     @Test
     void getTraderPortFolio_buildsPositionsAndSectorBreakdown() {
-        when(holdingRepository.findByTraderId(1L)).thenReturn(List.of(
-                new Holding(1L, 1L, 10L, 100L, 5, new Date()),
-                new Holding(2L, 1L, 11L, 100L, 7, new Date()),
-                new Holding(3L, 1L, 12L, 200L, 3, new Date())
+        when(holdingRepository.findByTrader_Id(1L)).thenReturn(List.of(
+                EntityTestBuilders.holding(1L, 1L, 10L, 100L, 5, new Date()),
+                EntityTestBuilders.holding(2L, 1L, 11L, 100L, 7, new Date()),
+                EntityTestBuilders.holding(3L, 1L, 12L, 200L, 3, new Date())
         ));
         Map<Long, String> stockMap = new ConcurrentHashMap<>();
         stockMap.put(10L, "A");
         stockMap.put(11L, "B");
         stockMap.put(12L, "C");
-        Map<Long, String> sectorMap = new ConcurrentHashMap<>();
-        sectorMap.put(100L, "Tech");
-        sectorMap.put(200L, "Finance");
         when(cacheDataMap.getStockIdNameMap()).thenReturn(stockMap);
-        when(cacheDataMap.getSectorIdNameMap()).thenReturn(sectorMap);
 
         PortfolioDto result = service.getTraderPortFolio(1L);
         assertEquals(1L, result.getTraderId());
         assertEquals(3, result.getPositions().size());
-        assertEquals(12, result.getSectorBreakDown().get("Tech"));
-        assertEquals(3, result.getSectorBreakDown().get("Finance"));
+        assertEquals(12, result.getSectorBreakDown().get("sector-100"));
+        assertEquals(3, result.getSectorBreakDown().get("sector-200"));
     }
 }

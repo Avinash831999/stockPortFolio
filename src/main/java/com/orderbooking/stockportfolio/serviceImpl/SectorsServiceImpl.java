@@ -61,9 +61,9 @@ public class SectorsServiceImpl implements SectorsService {
 
     @Override
     public void removeSector(Long sectorId) {
-        if(cacheDataMap.getSectorIdNameMap().containsKey(sectorId)) {
+        if (cacheDataMap.getSectorIdNameMap().containsKey(sectorId)) {
             sectorRepository.deleteById(sectorId);
-            cacheDataMap.getBasketIdNameMap().remove(sectorId);
+            cacheDataMap.getSectorIdNameMap().remove(sectorId);
         }
         else{
             throw new DataNotFoundException("Sector not found");
@@ -72,22 +72,20 @@ public class SectorsServiceImpl implements SectorsService {
 
     @Override
     public SectorDto updateSector(Long sectorId, SectorDto sectorDto) {
-        if(cacheDataMap.getSectorIdNameMap().containsKey(sectorId) &&
-                cacheDataMap.getSectorIdNameMap().get(sectorId).equals(sectorDto.getName())) {
-            Sector sector = this.sectorRepository.findById(sectorId).get();
+        if (!cacheDataMap.getSectorIdNameMap().containsKey(sectorId)) {
+            logger.error("sector with id {} not found", sectorId);
+            throw new DataNotFoundException("Sector not found");
+        }
+        Sector sector = this.sectorRepository.findById(sectorId).get();
 
-            if(sectorDto.getName() != null) {
-                sector.setName(sectorDto.getName());
-            }
-            sector.setUpdatedAt(new Date());
-            sector = sectorRepository.save(sector);
-            logger.info("sector with name {} updated successfully", sector.getName());
-            return convertToDto(sector);
+        if (sectorDto.getName() != null) {
+            sector.setName(sectorDto.getName());
         }
-        else{
-            logger.error("sector with name {} not found", sectorDto.getName());
-            throw new DataNotFoundException("Stock " + sectorDto.getName() + " not found");
-        }
+        sector.setUpdatedAt(new Date());
+        sector = sectorRepository.save(sector);
+        cacheDataMap.getSectorIdNameMap().put(sector.getId(), sector.getName());
+        logger.info("sector with name {} updated successfully", sector.getName());
+        return convertToDto(sector);
     }
 
     private Sector getSectorFromSectorDto(SectorDto sectorDto) {

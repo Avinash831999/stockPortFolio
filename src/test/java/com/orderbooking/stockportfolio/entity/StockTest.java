@@ -1,5 +1,6 @@
 package com.orderbooking.stockportfolio.entity;
 
+import com.orderbooking.stockportfolio.support.EntityTestBuilders;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -16,21 +17,21 @@ class StockTest {
         assertNull(empty.getId());
         assertNull(empty.getName());
         assertNull(empty.getPrice());
-        assertNull(empty.getSectorId());
+        assertNull(empty.getSector());
         assertNull(empty.getCreatedAt());
         assertNull(empty.getUpdatedAt());
 
         Date createdAt = new Date();
         Date updatedAt = new Date();
-        Stock stock = new Stock(1L, "ABC", 123.4f, 10L, createdAt, updatedAt);
+        Stock stock = EntityTestBuilders.stock(1L, "ABC", 123.4f, 10L, createdAt, updatedAt);
         assertEquals(1L, stock.getId());
         assertEquals("ABC", stock.getName());
         assertEquals(123.4f, stock.getPrice());
-        assertEquals(10L, stock.getSectorId());
+        assertEquals(10L, stock.getSector().getId());
         assertEquals(createdAt, stock.getCreatedAt());
         assertEquals(updatedAt, stock.getUpdatedAt());
 
-        Stock same = new Stock(1L, "ABC", 123.4f, 10L, createdAt, updatedAt);
+        Stock same = EntityTestBuilders.stock(1L, "ABC", 123.4f, 10L, createdAt, updatedAt);
         assertEquals(stock, same);
         assertEquals(stock.hashCode(), same.hashCode());
         assertTrue(stock.toString().contains("ABC"));
